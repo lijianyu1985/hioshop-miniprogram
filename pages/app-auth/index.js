@@ -46,6 +46,7 @@ Page({
             },
         });
         // 获取用户信息
+        console.log(wx);
         wx.getUserProfile({
             lang: 'zh_CN',
             desc: '用户登录',
