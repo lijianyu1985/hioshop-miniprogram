@@ -1,5 +1,6 @@
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
+var cartUtil = require('../../utils/cart.js');
 
 Page({
     data: {
@@ -17,8 +18,14 @@ Page({
         showNoMore: 0,
         loading:0,
         index_banner_img:0,
+        categoryListHeight: wx.getSystemInfoSync().windowHeight,
+        currentGood: {},
+        specPanelOpen: false
     },
     onLoad: function(options) {
+      this.setData({
+          categoryListHeight: wx.getSystemInfoSync().windowHeight - 50
+      });
     },
     getChannelShowInfo: function (e) {
         let that = this;
@@ -85,6 +92,9 @@ Page({
                 }
             }
         });
+    },
+    refreshCartNum: function(cartGoodsCount){
+        cartUtil.getCartNum(cartGoodsCount);
     },
     onShow: function() {
         this.getChannelShowInfo();
@@ -171,5 +181,14 @@ Page({
         } else {
             that.getCurrentList(nowId);
         }
-    }
+    },
+    onAddToCart: function(e){
+        this.selectComponent('#goodSpecPanel').show(e.target.dataset.item)
+        return false;
+    },
+    goodAdded: function(){
+        this.setData({
+            specPanelOpen: false
+        });
+    },
 })

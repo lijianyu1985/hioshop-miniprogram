@@ -78,7 +78,7 @@ page {
 .catalog .cate {
     flex: 1;
     height: 100%;
-    padding: 0 24rpx 0 30rpx;
+    padding: 0 2rpx 0 30rpx;
 }
 
 .catalog .cate .show-more {
@@ -106,14 +106,16 @@ page {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
 }
-.catalog .cate .loading-wrap .img{
+
+.catalog .cate .loading-wrap .img {
     width: 60rpx;
     height: 60rpx;
     margin-bottom: 20rpx;
 }
-.catalog .cate .loading-wrap .text{
+
+.catalog .cate .loading-wrap .text {
     font-size: 26rpx;
     color: #999;
 }
@@ -135,7 +137,7 @@ page {
     border-radius: 8rpx;
 }
 
-.catalog .cate .banner-container .text{
+.catalog .cate .banner-container .text {
     width: 100%;
     position: absolute;
     top: 0;
@@ -147,7 +149,7 @@ page {
     color: #fff;
 }
 
-.catalog .cate .banner-container .bg{
+.catalog .cate .banner-container .bg {
     width: 100%;
     position: absolute;
     top: 0;
@@ -314,9 +316,18 @@ page {
     height: 46rpx;
 }
 
-.goods-box .navi-url .goods-info .price-container .r .cart-img {
-    width: 46rpx;
-    height: 46rpx;
+.goods-box .navi-url .goods-info .price-container .add-to-cart {
+    font-size: 32rpx;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    line-height: 42rpx;
+    background: linear-gradient(to right, #ff3456, #ff347d);
+    border-radius: 46rpx;
+    box-sizing: border-box;
+    font-weight: bold;
+    margin-right: 11rpx;
 }
 
 .goods-box .navi-url .goods-info .price-container .l .h {

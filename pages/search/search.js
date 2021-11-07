@@ -17,6 +17,7 @@ Page({
         currentSortOrder: 'desc',
         salesSortOrder:'desc',
         categoryId: 0,
+        cartGoodsCount: ''
     },
     //事件处理函数
     closeSearch: function () {
@@ -43,7 +44,13 @@ Page({
             }
         });
     },
-
+    onUnload: function () {
+        let pages = getCurrentPages();
+        let prevPage = pages[pages.length - 2]; //上一个页面
+        if (prevPage.refreshCartNum && this.data.cartGoodsCount) {
+            prevPage.refreshCartNum(this.data.cartGoodsCount)
+        }
+    },
     inputChange: function (e) {
         this.setData({
             keyword: e.detail.value,

@@ -5,21 +5,28 @@
             <text class="txt">搜索, 共{{goodsCount}}款好味</text>
         </navigator>
     </view>
-    <view class="catalog">
+    <view class="catalog" style="height:{{categoryListHeight}}rpx">
         <scroll-view class="nav" scroll-y="true">
             <view class="item {{ nowId == 0 ?'active' : ''}}" bindtap="switchCate" data-id="0">全部</view>
-            <view class="item {{ nowId == item.id?'active' : ''}}" wx:for="{{navList}}" wx:key="id" data-id="{{item.id}}" bindtap="switchCate">{{item.name}}</view>
+            <view class="item {{ nowId == item.id?'active' : ''}}" wx:for="{{navList}}" wx:key="id"
+                data-id="{{item.id}}" bindtap="switchCate">{{item.name}}</view>
         </scroll-view>
         <scroll-view class="cate" scroll-y="true" bindscrolltolower="onBottom">
             <block wx:if="{{loading == 0}}">
                 <view class='banner-container' wx:if="{{nowId!= 0 && index_banner_img == 1}}">
-                    <image mode='aspectFill' style="width:100%;height:{{currentCategory.p_height}}rpx" src='{{currentCategory.img_url}}'>
+                    <image mode='aspectFill' style="width:100%;height:{{currentCategory.p_height}}rpx"
+                        src='{{currentCategory.img_url}}'>
                     </image>
-                    <view class="bg" style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;"></view>
-                    <view class="text" style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;">{{currentCategory.name}}</view>
+                    <view class="bg"
+                        style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;">
+                    </view>
+                    <view class="text"
+                        style="height:{{currentCategory.p_height}}rpx;line-height:{{currentCategory.p_height}}rpx;">
+                        {{currentCategory.name}}</view>
                 </view>
                 <view class='list-wrap clearfix'>
-                    <view class="goods-box {{(index+1)%2 == 0?'no-margin':''}}" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                    <view class="goods-box {{(index+1)%2 == 0?'no-margin':''}}" wx:for="{{list}}" wx:for-index="index"
+                        wx:for-item="item" wx:key="id">
                         <navigator hover-class='none' class='navi-url' url="/pages/goods/goods?id={{item.id}}">
                             <view class="box">
                                 <image src="{{item.list_pic_url}}" class="image">
@@ -39,6 +46,9 @@
                                     <view class='l'>
                                         <view class='h'>￥{{item.min_retail_price}}</view>
                                     </view>
+                                    <view data-item="{{item}}" class="r add-to-cart" catchtap="onAddToCart">
+                                        +
+                                    </view>
                                 </view>
                             </view>
                         </navigator>
@@ -55,4 +65,6 @@
             </block>
         </scroll-view>
     </view>
+    <goodspecpanel id="goodSpecPanel" bind:goodAdded="goodAdded">
+    </goodspecpanel>
 </view>

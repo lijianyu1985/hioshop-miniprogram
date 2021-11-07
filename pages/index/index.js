@@ -1,6 +1,7 @@
 const util = require('../../utils/util.js');
 const api = require('../../config/api.js');
 const user = require('../../services/user.js');
+var cartUtil = require('../../utils/cart.js');
 
 //获取应用实例
 const app = getApp()
@@ -136,5 +137,8 @@ Page({
         this.getChannelShowInfo();
         wx.hideNavigationBarLoading() //完成停止加载
         wx.stopPullDownRefresh() //停止下拉刷新
+    },
+    refreshCartNum: function(cartGoodsCount){
+        cartUtil.getCartNum(cartGoodsCount);
     },
 })

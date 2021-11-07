@@ -1,5 +1,6 @@
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
+var cartUtil = require('../../utils/cart.js');
 const app = getApp()
 
 Page({
@@ -28,7 +29,7 @@ Page({
     onShow: function() {
         // 页面显示
         this.getCartList();
-        this.getCartNum();
+        cartUtil.getCartNum();
         wx.removeStorageSync('categoryId');
     },
     goGoodsDetail(e){
@@ -43,7 +44,7 @@ Page({
     onPullDownRefresh: function() {
         wx.showNavigationBarLoading()
         this.getCartList();
-        this.getCartNum();
+        cartUtil.getCartNum();
         wx.hideNavigationBarLoading() //完成停止加载
         wx.stopPullDownRefresh() //停止下拉刷新
     },
@@ -161,7 +162,7 @@ Page({
                 });
                 let cartItem = that.data.cartGoods[itemIndex];
                 cartItem.number = number;
-                that.getCartNum();
+                cartUtil.getCartNum();
             } else {
                 util.showErrorToast('库存不足了')
             }
@@ -193,24 +194,6 @@ Page({
             cartGoods: this.data.cartGoods,
         });
         this.updateCart(itemIndex, cartItem.product_id, number, cartItem.id);
-    },
-    getCartNum: function() {
-        util.request(api.CartGoodsCount).then(function(res) {
-            if (res.errno === 0) {
-                let cartGoodsCount = '';
-                if (res.data.cartTotal.goodsCount == 0) {
-                    wx.removeTabBarBadge({
-                        index: 2,
-                    })
-                } else {
-                    cartGoodsCount = res.data.cartTotal.goodsCount + '';
-                    wx.setTabBarBadge({
-                        index: 2,
-                        text: cartGoodsCount
-                    })
-                }
-            }
-        });
     },
     checkoutOrder: function() {
         //获取已选择的商品
@@ -351,7 +334,7 @@ Page({
                     cartTotal: res.data.cartTotal
                 });
                 that.getCartList();
-                that.getCartNum();
+                cartUtil.getCartNum();
             }
             that.setData({
                 checkedAllStatus: that.isCheckedAll()

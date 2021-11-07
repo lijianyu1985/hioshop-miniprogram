@@ -4,12 +4,14 @@ var util = require('../../utils/util.js');
 var timer = require('../../utils/wxTimer.js');
 var api = require('../../config/api.js');
 const user = require('../../services/user.js');
+var cartUtil = require('../../utils/cart.js');
+
 Page({
     data: {
         id: 0,
         goods: {},
         gallery: [],
-        galleryImages:[],
+        galleryImages: [],
         specificationList: [],
         productList: [],
         cartGoodsCount: 0,
@@ -26,9 +28,9 @@ Page({
         goodsNumber: 0,
         loading: 0,
         current: 0,
-        showShareDialog:0,
-        userInfo:{},
-        autoplay:true
+        showShareDialog: 0,
+        userInfo: {},
+        autoplay: true
     },
     hideDialog: function (e) {
         let that = this;
@@ -36,7 +38,7 @@ Page({
             showShareDialog: false,
         });
     },
-    shareTo:function(){
+    shareTo: function () {
         let userInfo = wx.getStorageSync('userInfo');
         if (userInfo == '') {
             util.loginNow();
@@ -61,7 +63,7 @@ Page({
             urls: that.data.galleryImages // 需要预览的图片http链接列表  
         })
     },
-    bindchange: function(e) {
+    bindchange: function (e) {
         let current = e.detail.current;
         this.setData({
             current: current
@@ -73,12 +75,12 @@ Page({
             number: number
         });
     },
-    goIndex: function() {
+    goIndex: function () {
         wx.switchTab({
             url: '/pages/index/index',
         })
     },
-    onShareAppMessage: function(res) {
+    onShareAppMessage: function (res) {
         let id = this.data.id;
         let name = this.data.goods.name;
         let image = this.data.goods.list_pic_url;
@@ -89,14 +91,24 @@ Page({
             imageUrl: image
         }
     },
-    onUnload: function() {},
-    handleTap: function(event) { //阻止冒泡 
+    onUnload: function () {
+        let pages = getCurrentPages();
+        let prevPage = pages[pages.length - 2]; //上一个页面
+        if (prevPage.refreshCartNum) {
+            prevPage.refreshCartNum(this.data.cartGoodsCount + '')
+        } else {
+            prevPage.setData({
+                cartGoodsCount: this.data.cartGoodsCount + ''
+            })
+        }
     },
-    getGoodsInfo: function() {
+    handleTap: function (event) { //阻止冒泡 
+    },
+    getGoodsInfo: function () {
         let that = this;
         util.request(api.GoodsDetail, {
             id: that.data.id
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.errno === 0) {
                 let _specificationList = res.data.specificationList;
                 // 如果仅仅存在一种货品，那么商品页面初始化时默认checked
@@ -123,19 +135,18 @@ Page({
                     productList: res.data.productList,
                     checkedSpecPrice: res.data.info.retail_price,
                     galleryImages: galleryImages,
-                    loading:1
+                    loading: 1
                 });
                 setTimeout(() => {
                     WxParse.wxParse('goodsDetail', 'html', res.data.info.goods_desc, that);
                 }, 1000);
                 wx.setStorageSync('goodsImage', res.data.info.https_pic_url);
-            }
-            else{
+            } else {
                 util.showErrorToast(res.errmsg)
             }
         });
     },
-    clickSkuValue: function(event) {
+    clickSkuValue: function (event) {
         // goods_specification中的id 要和product中的goods_specification_ids要一样
         let that = this;
         let specNameId = event.currentTarget.dataset.nameId;
@@ -166,7 +177,7 @@ Page({
         //重新计算哪些值不可以点击
     },
     //获取选中的规格信息
-    getCheckedSpecValue: function() {
+    getCheckedSpecValue: function () {
         let checkedValues = [];
         let _specificationList = this.data.specificationList;
         let _checkedObj = {
@@ -184,37 +195,37 @@ Page({
         return checkedValues;
     },
     //根据已选的值，计算其它值的状态
-    setSpecValueStatus: function() {
+    setSpecValueStatus: function () {
 
     },
     //判断规格是否选择完整
-    isCheckedAllSpec: function() {
-        return !this.getCheckedSpecValue().some(function(v) {
+    isCheckedAllSpec: function () {
+        return !this.getCheckedSpecValue().some(function (v) {
             if (v.valueId == 0) {
                 return true;
             }
         });
     },
-    getCheckedSpecKey: function() {
-        let checkedValue = this.getCheckedSpecValue().map(function(v) {
+    getCheckedSpecKey: function () {
+        let checkedValue = this.getCheckedSpecValue().map(function (v) {
             return v.valueId;
         });
         return checkedValue.join('_');
     },
-    changeSpecInfo: function() {
+    changeSpecInfo: function () {
         let checkedNameValue = this.getCheckedSpecValue();
         this.setData({
             disabled: '',
             number: 1
         });
         //设置选择的信息
-        let checkedValue = checkedNameValue.filter(function(v) {
+        let checkedValue = checkedNameValue.filter(function (v) {
             if (v.valueId != 0) {
                 return true;
             } else {
                 return false;
             }
-        }).map(function(v) {
+        }).map(function (v) {
             return v.valueText;
         });
         if (checkedValue.length > 0) {
@@ -286,8 +297,8 @@ Page({
             });
         }
     },
-    getCheckedProductItem: function(key) {
-        return this.data.productList.filter(function(v) {
+    getCheckedProductItem: function (key) {
+        return this.data.productList.filter(function (v) {
             if (v.goods_specification_ids == key) {
                 return true;
             } else {
@@ -295,7 +306,7 @@ Page({
             }
         });
     },
-    onLoad: function(options) {
+    onLoad: function (options) {
         let id = 0;
         var scene = decodeURIComponent(options.scene);
         if (scene != 'undefined') {
@@ -308,7 +319,7 @@ Page({
             valueId: id,
         });
     },
-    onShow: function() {
+    onShow: function () {
         let userInfo = wx.getStorageSync('userInfo');
         let info = wx.getSystemInfoSync();
         let sysHeight = info.windowHeight - 100;
@@ -326,14 +337,14 @@ Page({
         this.getGoodsInfo();
         this.getCartCount();
     },
-    onHide:function(){
+    onHide: function () {
         this.setData({
-            autoplay:false
+            autoplay: false
         })
     },
-    getCartCount: function() {
+    getCartCount: function () {
         let that = this;
-        util.request(api.CartGoodsCount).then(function(res) {
+        util.request(api.CartGoodsCount).then(function (res) {
             if (res.errno === 0) {
                 that.setData({
                     cartGoodsCount: res.data.cartTotal.goodsCount
@@ -341,42 +352,42 @@ Page({
             }
         });
     },
-    onPullDownRefresh: function() {
+    onPullDownRefresh: function () {
         wx.showNavigationBarLoading()
         this.getGoodsInfo();
         wx.hideNavigationBarLoading() //完成停止加载
         wx.stopPullDownRefresh() //停止下拉刷新
     },
-    openCartPage: function() {
+    openCartPage: function () {
         wx.switchTab({
             url: '/pages/cart/cart',
         });
     },
-    goIndexPage: function() {
+    goIndexPage: function () {
         wx.switchTab({
             url: '/pages/index/index',
         });
     },
-    switchAttrPop: function() {
+    switchAttrPop: function () {
         if (this.data.openAttr == false) {
             this.setData({
                 openAttr: !this.data.openAttr
             });
         }
     },
-    closeAttr: function() {
+    closeAttr: function () {
         this.setData({
             openAttr: false,
             alone_text: '单独购买'
         });
     },
-    goMarketing: function(e) {
+    goMarketing: function (e) {
         let that = this;
         that.setData({
             showDialog: !this.data.showDialog
         });
     },
-    addToCart: function() {
+    addToCart: function () {
         // 判断是否登录，如果没有登录，则登录
         util.loginNow();
         var that = this;
@@ -423,8 +434,8 @@ Page({
                 return false;
             }
             wx.showLoading({
-              title: '',
-              mask:true
+                title: '',
+                mask: true
             })
             util.request(api.CartAdd, {
                     addType: 0,
@@ -432,20 +443,21 @@ Page({
                     number: this.data.number,
                     productId: checkedProduct.id
                 }, "POST")
-                .then(function(res) {
+                .then(function (res) {
                     let _res = res;
                     if (_res.errno == 0) {
                         wx.showToast({
                             title: '添加成功',
                         });
+                        const cartGoodsCount = _res.data.cartTotal.goodsCount
                         if (productLength != 1 || that.data.openAttr == true) {
                             that.setData({
                                 openAttr: !that.data.openAttr,
-                                cartGoodsCount: _res.data.cartTotal.goodsCount
+                                cartGoodsCount
                             });
                         } else {
                             that.setData({
-                                cartGoodsCount: _res.data.cartTotal.goodsCount
+                                cartGoodsCount
                             });
                         }
                     } else {
@@ -458,7 +470,7 @@ Page({
                 });
         }
     },
-    fastToCart: function() {
+    fastToCart: function () {
         // 判断是否登录，如果没有登录，则登录
         util.loginNow();
         let userInfo = wx.getStorageSync('userInfo');
@@ -506,15 +518,15 @@ Page({
             //添加到购物车
             wx.showLoading({
                 title: '',
-                mask:true
-              })
+                mask: true
+            })
             util.request(api.CartAdd, {
                     addType: 1, // 0：正常加入购物车，1:立即购买，2:再来一单
                     goodsId: this.data.id,
                     number: this.data.number,
                     productId: checkedProduct.id,
                 }, "POST")
-                .then(function(res) {
+                .then(function (res) {
                     let _res = res;
                     wx.hideLoading()
                     if (_res.errno == 0) {
@@ -531,7 +543,7 @@ Page({
                 });
         }
     },
-    cutNumber: function() {
+    cutNumber: function () {
         this.setData({
             number: (this.data.number - 1 > 1) ? this.data.number - 1 : 1
         });
@@ -539,7 +551,7 @@ Page({
             disabled: ''
         });
     },
-    addNumber: function() {
+    addNumber: function () {
         this.setData({
             number: Number(this.data.number) + 1
         });

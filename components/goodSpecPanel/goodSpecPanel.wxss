@@ -1,0 +1,248 @@
+@import "../../lib/wxParse/wxParse.wxss";
+
+.show {
+    display: block;
+    height: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.attr-pop-box {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    bottom: 0;
+    /* display: none; */
+}
+
+.attr-pop {
+    width: 100%;
+    height: auto;
+    /* max-height: 780rpx; */
+    padding: 30rpx 30rpx 10rpx;
+    background: #fff;
+    position: fixed;
+    z-index: 9;
+    bottom: 0rpx;
+    box-sizing: border-box;
+}
+
+.attr-pop .temp-tip {
+    margin: 60rpx 0 30rpx 0;
+    background: #ffe49c;
+    font-size: 24rpx;
+    padding: 20rpx;
+}
+
+.attr-pop .close {
+    position: absolute;
+    width: 48rpx;
+    height: 48rpx;
+    right: 31.25rpx;
+    overflow: hidden;
+    top: 31.25rpx;
+}
+
+.attr-pop .close .icon {
+    width: 48rpx;
+    height: 48rpx;
+}
+
+.attr-pop .img-info {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20rpx;
+}
+
+.attr-pop .img-info .img-wrap {
+    min-width: 160rpx;
+    height: 160rpx;
+    margin-right: 20rpx;
+}
+
+.img-info .info .price-range {
+    display: flex;
+    flex-direction: column;
+}
+
+.attr-pop .img-info .info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.price-range .retail-price {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+
+.price-range .retail-price .p-title {
+    font-size: 26rpx;
+    margin-right: 10rpx;
+}
+
+.price-range .retail-price .g-price {
+    font-size: 30rpx;
+    font-weight: 500;
+    color: #ff3456;
+}
+
+.attr-pop .img {
+    float: left;
+    height: 160rpx;
+    width: 160rpx;
+    background: #f4f4f4;
+}
+
+.attr-pop .p {
+    font-size: 33rpx;
+    color: #333;
+    height: 33rpx;
+    line-height: 33rpx;
+    margin-bottom: 10rpx;
+}
+
+.attr-pop .a {
+    font-size: 28rpx;
+    color: #333;
+    /* height: 40rpx; */
+    line-height: 40rpx;
+    margin-top: 10rpx;
+}
+
+.spec-con {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.spec-con .name {
+    margin-bottom: 10rpx;
+    font-size: 29rpx;
+    color: #333;
+}
+
+.spec-con .number-item {
+    margin-bottom: 10rpx;
+}
+
+.spec-con .stock-num {
+    font-size: 30rpx;
+}
+
+.spec-con .values {
+    height: auto;
+}
+
+.spec-con .value {
+    display: inline-block;
+    /* height: 62rpx; */
+    padding: 4rpx 35rpx;
+    line-height: 50rpx;
+    text-align: center;
+    margin-right: 25rpx;
+    margin-bottom: 14rpx;
+    font-size: 26rpx;
+    border: 1px solid #ccc;
+}
+
+.spec-con .value.disable {
+    border: 1px solid #ccc;
+    color: #ccc;
+}
+
+.spec-con .value.selected {
+    border: 1px solid #ff3456;
+    color: #ff3456;
+}
+
+.spec-con .value.out-stock {
+    border: 1px solid #a3a3a3;
+    color: #696969;
+    background: #dbdbdb;
+}
+
+.number-item .selnum {
+    width: 280rpx;
+    height: 62rpx;
+    border: 1px solid #ccc;
+    display: flex;
+}
+
+.number-item .cut {
+    width: 90rpx;
+    height: 100%;
+    text-align: center;
+    line-height: 58rpx;
+    color: #555;
+    border-radius: 0;
+    background: #fff;
+    border: none;
+}
+
+.number-item .number {
+    width: 100rpx;
+    height: 100%;
+    text-align: center;
+    line-height: 62rpx;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    float: left;
+    font-size: 32rpx;
+}
+
+.number-item .add {
+    width: 90rpx;
+    height: 100%;
+    text-align: center;
+    line-height: 58rpx;
+    color: #555;
+    border-radius: 0;
+    background: #fff;
+    border: none;
+}
+
+button::after {
+    border-radius: 0;
+    border: none;
+}
+
+.bottom-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bottom-container{
+    margin-top: 10rpx;
+}
+
+.to-cart-btn {
+    height: 90rpx;
+    width: 50%;
+    line-height: 90rpx;
+    color: #192841;
+    background: linear-gradient(to right, #f8cd4e, #fae277); /* 标准的语法（必须放在最后） */
+    font-size: 28rpx;
+    text-align: center;
+    font-weight: 500;
+}
+
+.to-pay-btn {
+    height: 90rpx;
+    width: 50%;
+    line-height: 90rpx;
+    color: #fff;
+    background: -webkit-linear-gradient(left, #fdbb43, #ff347d); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #fdbb43, #ff347d); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #fdbb43, #ff347d); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #ff3456, #ff347d); /* 标准的语法（必须放在最后） */
+    font-size: 28rpx;
+    font-weight: 500;
+    text-align: center;
+}
