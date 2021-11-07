@@ -4,7 +4,7 @@ App({
     data: {
         deviceInfo: {}
     },
-    onLaunch: function() {
+    onLaunch: function () {
         this.data.deviceInfo = wx.getSystemInfoSync();
         console.log(this.data.deviceInfo);
         // 展示本地存储能力
@@ -22,7 +22,8 @@ App({
             success: res => {
                 if (res.authSetting['scope.userInfo']) {
                     // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                    wx.getUserInfo({
+                    const getUserInfo = wx.getUserProfile || wx.getUserInfo
+                    getUserInfo({
                         success: res => {
                             // 可以将 res 发送给后台解码出 unionId
                             this.globalData.userInfo = res.userInfo
@@ -38,7 +39,7 @@ App({
         })
         let that = this;
         wx.getSystemInfo({ //  获取页面的有关信息
-            success: function(res) {
+            success: function (res) {
                 wx.setStorageSync('systemInfo', res)
                 var ww = res.windowWidth;
                 var hh = res.windowHeight;

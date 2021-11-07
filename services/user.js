@@ -54,7 +54,8 @@ function checkLogin() {
 
 function authorizeInfo() {
     return new Promise(function(resolve, reject) {
-        wx.getUserInfo({
+        const getUserInfo = wx.getUserProfile || wx.getUserInfo
+        getUserInfo({
             withCredentials: true,
             success: function(res) {
                 resolve({
